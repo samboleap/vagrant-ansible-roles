@@ -1,0 +1,6 @@
+---
+# vars file for demo-ansible-role-apache
+http_host: "apache2"
+http_conf: "apache.conf"
+http_port: "9000"
+disabled_default: true

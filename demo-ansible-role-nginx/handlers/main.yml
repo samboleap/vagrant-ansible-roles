@@ -1,0 +1,6 @@
+---
+# handlers file for demo-ansible-role
+- name: Restart Nginx
+  service: 
+    name: nginx
+    state: restarted

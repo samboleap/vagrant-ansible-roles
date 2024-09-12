@@ -1,0 +1,3 @@
+---
+# defaults file for demo-ansible-role
+type_of_webserver: Nginx

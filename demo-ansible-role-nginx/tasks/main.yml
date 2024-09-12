@@ -1,0 +1,26 @@
+---
+# tasks file for demo-ansible-role
+- name: Install Nginx
+  apt: 
+    name: nginx
+    state: latest
+
+- name: Create HTML file 
+  file:
+    path: "/var/www/nginx/html"
+    state: directory
+    owner: "root"
+    mode: "0775"
+
+- name: Copy index.html file to template
+  template:
+    src: "templates/index.html"
+    dest: "/usr/share/nginx/html"
+  vars:
+    type_of_webserver: nginx
+
+- name: Reloaded Nginx
+  service:
+    name: nginx
+    state: reloaded
+    enabled: true

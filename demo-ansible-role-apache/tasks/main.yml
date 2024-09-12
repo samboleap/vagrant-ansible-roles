@@ -1,0 +1,39 @@
+---
+- name: Install Apache Server
+  apt: 
+    name: apache2 
+    update_cache: yes 
+    state: latest
+
+- name: Create document root
+  file: 
+    path: "/var/www/apache/html"
+    state: directory
+    owner: root
+    mode: "0755"
+
+- name: Set up Apache VirtualHost
+  template:
+    src: "files/apache.conf"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+
+- name: Enable new site
+  shell: /usr/sbin/a2ensite {{ http_conf }}
+
+- name: Disable defualt Apache Site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  when: disabled_default
+
+- name: Update Apache configuration
+  lineinfile:
+    path: /etc/apache2/ports.conf
+    regexp: '^Listen'
+    line: 'Listen 9000'
+
+- name: Check Apache status
+  command: systemctl status apache2
+  register: apache_status
+  ignore_errors: yes
+
+- debug:
+    var: apache_status.stdout_lines

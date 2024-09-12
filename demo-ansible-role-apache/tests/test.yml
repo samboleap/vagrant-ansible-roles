@@ -1,0 +1,5 @@
+---
+- hosts: apache
+  remote_user: root
+  roles:
+    - demo-ansible-role-apache

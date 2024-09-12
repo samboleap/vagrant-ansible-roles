@@ -1,0 +1,28 @@
+Vagrant.configure("2") do |config|
+  config.ssh.insert_key = false  
+  config.vm.define "apache" do |apache|
+    apache.vm.box = "ubuntu/bionic64"
+    apache.vm.hostname = "demo-ansible-role-apache"
+    apache.vm.network :private_network, ip: "192.168.56.62"
+    apache.vm.network "forwarded_port", guest: 9000, host: 9000
+
+    apache.vm.provider :virtualbox do |v|
+      v.name = "apache"
+      v.memory = 2056
+      v.cpus = 2
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+
+    apache.vm.provision "ansible" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.extra_vars = {
+        http_conf: "apache.conf",
+        disabled_default: true
+      }
+      ansible.compatibility_mode = "2.0"
+      ansible.inventory_path = "hosts"
+      ansible.become = true
+    end
+  end
+end

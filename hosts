@@ -1,0 +1,7 @@
+[all]
+nginx ansible_host=127.0.0.1
+apache ansible_host=127.0.0.1
+
+[webservers]
+nginx
+apache

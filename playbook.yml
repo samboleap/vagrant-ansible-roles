@@ -1,0 +1,13 @@
+---
+- name: Configure web servers
+  hosts: all
+  become: true
+  become_method: sudo
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    
+  roles:
+    - role: demo-ansible-role-nginx
+      when: inventory_hostname == "nginx"
+    - role: demo-ansible-role-apache 
+      when: inventory_hostname == "apache"
